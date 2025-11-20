@@ -8,8 +8,10 @@ import rehypeSlug from "rehype-slug";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { axiosInstance } from "@/hooks/useFetchData";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useScrollView } from "@/hooks/useScrollView";
+import FadeInOnScroll from "./FadeInScroll";
 
 type Props = {
   content:string
@@ -17,77 +19,191 @@ type Props = {
 
 
 export const Markdown: React.FC<Props> = ({content}) => {
-   
+    const { ref, visible } = useScrollView();
+
 
   return (
-           <ReactMarkdown
-          remarkPlugins={[remarkGfm,remarkEmoji]}
-          rehypePlugins={[rehypeRaw,rehypeSlug]}
-          components={{
-            h1: (props) => <h1 className="text-3xl hover:text-primary font-bold mt-12 mb-4" {...props} />,
-            h2: (props) => <h2 className="text-2xl hover:text-primary font-semibold mt-8 mb-3" {...props} />,
-            h3: (props) => <h3 className="text-xl hover:text-primary font-semibold mt-6 mb-2" {...props} />,
-            p: (props) => <p className="leading-relaxed mb-4" {...props} />,
-            a: (props) => (
-              <Link
-                className="text-blue-600 dark:text-blue-400 underline hover:opacity-80"
-                target="_blank"
-                rel="noopener noreferrer"
-                {...props}
-              />
-            ),
-            ul: (props) => <ul className="list-disc ml-6 mb-4" {...props} />,
-            ol: (props) => <ol className="list-decimal ml-6 mb-4" {...props} />,
-            li: (props) => <li className="mb-1" {...props} />,
-            blockquote: (props) => (
-              <blockquote
-                className="border-l-4 border-primary pl-4 italic my-4 font-mono"
-                {...props}
-              />
-            ),
-            code: (props) => {
-              const languageSelect = (text:any)=>{
-                const classNames = text?.node?.properties?.className
-                if (classNames?.length == 0){
-                  return "python"
-                }else{
-                  return text?.node?.properties?.className?.[0].split("-")[1]
-                }
-              }
-              if (props.node?.position?.start.line == props.node?.position?.end.line){
-               return (
-                <span className="border border-foreground/25 py-1 px-4 rounded-sm font-mono text-sm font-bold">
-                  {props.children}
-                </span>
-               ) 
-              }else{
-                return(
-                <CodeBlockWithCopy
-                  language={languageSelect(props)}
-                  code={props.children}
-                />
-                  
-              )
-              }
-            },
-            pre: (props) => (
-              <pre
-                className=" porse text-white p-4 rounded-lg overflow-x-auto mb-4"
-                {...props}
-              />
-            ),
-            hr: () => <hr className="my-6 border-gray-300 dark:border-gray-700" />,
-            img: (props) => (
-              <img
-                className="rounded-lg my-4 shadow-md mx-auto"
-                alt={props.alt ?? ""}
-                {...props}
-              />
-            ),
-          }}
+    <div ref={ref}>
+
+<ReactMarkdown
+  remarkPlugins={[remarkGfm, remarkEmoji]}
+  rehypePlugins={[rehypeRaw, rehypeSlug]}
+  components={{
+    //
+    // HEADINGS (ID TETAP DI ELEMEN TERLUAR)
+    //
+    h1: (props) => {
+      const { id, children, ...rest } = props;
+      return (
+        <h1
+          id={id}
+          className="text-3xl hover:text-primary font-bold mt-12 mb-4"
+          {...rest}
         >
-                {content}
-        </ReactMarkdown>
+          <FadeInOnScroll>
+            <span>{children}</span>
+          </FadeInOnScroll>
+        </h1>
+      );
+    },
+
+    h2: (props) => {
+      const { id, children, ...rest } = props;
+      return (
+        <h2
+          id={id}
+          className="text-2xl hover:text-primary font-semibold mt-8 mb-3"
+          {...rest}
+        >
+          <FadeInOnScroll>
+            <span>{children}</span>
+          </FadeInOnScroll>
+        </h2>
+      );
+    },
+
+    h3: (props) => {
+      const { id, children, ...rest } = props;
+      return (
+        <h3
+          id={id}
+          className="text-xl hover:text-primary font-semibold mt-6 mb-2"
+          {...rest}
+        >
+          <FadeInOnScroll>
+            <span>{children}</span>
+          </FadeInOnScroll>
+        </h3>
+      );
+    },
+
+    //
+    // PARAGRAPH
+    //
+    p: ({ children, ...rest }) => (
+      <p className="leading-relaxed mb-4" {...rest}>
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </p>
+    ),
+
+    //
+    // LINK
+    //
+    a: ({ children, ...rest }) => (
+      <FadeInOnScroll>
+        <Link
+          className="text-blue-600 dark:text-blue-400 underline hover:opacity-80"
+          target="_blank"
+          rel="noopener noreferrer"
+          {...rest}
+        >
+          {children}
+        </Link>
+      </FadeInOnScroll>
+    ),
+
+    //
+    // LISTS
+    //
+    ul: ({ children, ...rest }) => (
+      <ul className="list-disc ml-6 mb-4" {...rest}>
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </ul>
+    ),
+
+    ol: ({ children, ...rest }) => (
+      <ol className="list-decimal ml-6 mb-4" {...rest}>
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </ol>
+    ),
+
+    li: ({ children, ...rest }) => (
+      <li className="mb-1" {...rest}>
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </li>
+    ),
+
+    //
+    // BLOCKQUOTE
+    //
+    blockquote: ({ children, ...rest }) => (
+      <blockquote
+        className="border-l-4 border-primary pl-4 italic my-4 font-mono"
+        {...rest}
+      >
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </blockquote>
+    ),
+
+    //
+    // INLINE CODE & CODE BLOCKS
+    //
+    code: (props) => {
+      const languageSelect = (text) => {
+        const classNames = text?.node?.properties?.className;
+        if (!classNames || classNames.length === 0) return "plaintext";
+        return classNames[0].split("-")[1];
+      };
+
+      // Inline code
+      if (props.node?.position?.start.line === props.node?.position?.end.line) {
+        return (
+          <FadeInOnScroll>
+            <span className="border border-foreground/25 py-1 px-4 rounded-sm font-mono text-sm font-bold">
+              {props.children}
+            </span>
+          </FadeInOnScroll>
+        );
+      }
+
+      // Code block
+      return (
+        <FadeInOnScroll>
+          <CodeBlockWithCopy
+            language={languageSelect(props)}
+            code={props.children}
+          />
+        </FadeInOnScroll>
+      );
+    },
+
+    pre: ({ children, ...rest }) => (
+      <pre
+        className="porse text-white p-4 rounded-lg overflow-x-auto mb-4"
+        {...rest}
+      >
+        <FadeInOnScroll>{children}</FadeInOnScroll>
+      </pre>
+    ),
+
+    //
+    // HR
+    //
+    hr: () => (
+      <FadeInOnScroll>
+        <hr className="my-6 border-gray-300 dark:border-gray-700" />
+      </FadeInOnScroll>
+    ),
+
+    //
+    // IMAGES
+    //
+    img: ({ alt, ...rest }) => (
+      <FadeInOnScroll>
+        <img
+          className="rounded-lg my-4 shadow-md mx-auto"
+          alt={alt ?? ""}
+          {...rest}
+        />
+      </FadeInOnScroll>
+    ),
+  }}
+>
+  {content}
+</ReactMarkdown>
+
+
+    </div>
   )
 }
 

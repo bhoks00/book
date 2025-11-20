@@ -22,22 +22,12 @@ export const LoginForm = ({ successCallback }: { successCallback?: () => void })
   const formikRef = useRef(null);
   const router = useRouter();
 
-  const { login, errorLogin,isErrorLogin,isSuccessLogin,isPendingLogin} = useAuth()
 
   const handleSubmit = async (values: any) => {
     // login(values.username, values.password);
   };
 
-  useEffect(() => {
-    if (isSuccessLogin) {
-      toast.success("Login berhasil!");
-      router.push("/dashboard"); 
-      
-    } else if (isErrorLogin) {
-      toast.error(errorLogin?.response?.data?.message || "Login gagal");
-    }
-  }, [isSuccessLogin, isErrorLogin]);
-
+  
   return (
     <Formik
       innerRef={formikRef}
@@ -62,9 +52,8 @@ export const LoginForm = ({ successCallback }: { successCallback?: () => void })
           <Button
             type="submit"
             className="mt-2"
-            disabled={isPendingLogin || !values.username || !values.password}
           >
-            {isPendingLogin ? "Loading..." : "Login"}
+          Login
           </Button>
         </Form>
       )}

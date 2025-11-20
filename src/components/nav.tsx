@@ -23,11 +23,11 @@ export function NavbarMenu() {
   const navItems = [
     {
       name: "Buku",
-      link: "#features",
+      link: "#book",
     },
     {
       name: "Tentang Kami",
-      link: "#features",
+      link: "#about",
     },
     {
       name: "Kontak",
@@ -47,27 +47,16 @@ export function NavbarMenu() {
         {/* Desktop Navigation */}
         <NavBody>
           <NavbarLogo />
-          <NavItems items={navItems} />
-          <div className="flex items-center gap-4">
-             <Dialog open={openLogin} onOpenChange={setOpenLogin}>
-              <DialogTrigger asChild>
-                   <NavbarButton variant="secondary">Login</NavbarButton>
-              </DialogTrigger>
-              <DialogContent className="flex flex-col gap-8">
-                <DialogTitle className="text-center">Login</DialogTitle>
-                <LoginForm  successCallback={()=>setOpenDialogLogin(false)}/>
-              </DialogContent>
-            </Dialog>
-            <Dialog open={openRegister} onOpenChange={setOpenRegister}>
-              <DialogTrigger asChild>
-                 <NavbarButton   className="bg-primary text-white">Sign Up</NavbarButton>
-              </DialogTrigger>
-              <DialogContent className="flex flex-col gap-8">
-                <DialogTitle className="text-center">Sign Up</DialogTitle>
-                <RegisterForm  successCallback={()=>setOpenDialogRegister(false)}/>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <NavItems items={navItems}/>
+            <Dialog open={openLogin} onOpenChange={setOpenLogin}>
+            <DialogTrigger asChild>
+                <NavbarButton variant="secondary">Login</NavbarButton>
+            </DialogTrigger>
+            <DialogContent className="flex flex-col gap-8">
+              <DialogTitle className="text-center">Login</DialogTitle>
+              <LoginForm  successCallback={()=>setOpenLoginMobile(false)}/>
+            </DialogContent>
+          </Dialog>
         </NavBody>
 
         {/* Mobile Navigation */}
@@ -94,7 +83,7 @@ export function NavbarMenu() {
                 <span className="block">{item.name}</span>
               </Link>
             ))}
-            <div className="flex w-full flex-col gap-4">
+            {/* <div className="flex w-full flex-col gap-4">
             <Dialog open={openLoginMobile} onOpenChange={setOpenLoginMobile}>
               <DialogTrigger asChild>
                    <NavbarButton variant="secondary">Login</NavbarButton>
@@ -113,7 +102,7 @@ export function NavbarMenu() {
                 <RegisterForm  successCallback={()=>setOpenRegisterMobile(false)}/>
               </DialogContent>
             </Dialog>
-            </div>
+            </div> */}
           </MobileNavMenu>
         </MobileNav>
       </Navbar>

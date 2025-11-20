@@ -6,6 +6,7 @@ import { AspectRatio } from "./aspect-ratio";
 import Image from "next/image";
 import { Card, CardContent, CardFooter, CardHeader } from "./card";
 import Link from "next/link";
+import { Book } from "@/type";
 
 export const CardItem = React.memo(
   ({
@@ -14,7 +15,7 @@ export const CardItem = React.memo(
     hovered,
     setHovered,
   }: {
-    card: any;
+    card: Book;
     index: number;
     hovered: number | null;
     setHovered: React.Dispatch<React.SetStateAction<number | null>>;
@@ -30,13 +31,13 @@ export const CardItem = React.memo(
       <CardContent className="overflow-hidden rounded-lg relative p-0">
       <div className={cn( "absolute opacity-0 flex items-end justify-center p-4 z-4 bg-black/40 w-full h-full", hovered === index  && "opacity-100",)}>
         <h1 className="text-center text-2xl font-bold">
-          {card.name}
+          {card?.title}
         </h1>
       </div>
       <AspectRatio ratio={4/5} >
         <Image
-          src={`${card.image}`}
-          alt={card.title}
+          src={`${card?.cover??"/#"}`}
+          alt={card?.title}
           fill
           className="object-cover relative z-3 inset-0"
         />
@@ -57,13 +58,13 @@ type CardItem = {
   descriptions:string;
 };
 
-export function FocusCards({ data }: { data: CardItem[] }) {
+export function FocusCards({ data }: { data: Book[] }) {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
     <div className="grid grid-cols-1 px-30 md:grid-cols-3 gap-10 max-w-5xl mx-auto md:px-8 w-full">
       {data?.map((card, index) => (
-        <Link key={card.name} href={`${card.slug}`}>
+        <Link key={index} href={`${card?.slug??"/#"}`}>
           <CardItem
             card={card}
             index={index}

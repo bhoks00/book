@@ -3,22 +3,17 @@
 
 import { motion } from "motion/react";
 import { Button } from "./ui/button";
+import { HexagonBackground } from "./animate-ui/components/backgrounds/hexagon";
 
-export default function HeroSectionOne() {
+export default function HeroSectionOne({id}:{id:string}) {
   return (
-    <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
-      <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200 dark:bg-neutral-800/80">
-        <div className="absolute top-0 h-40 w-px bg-linear-to-b from-transparent via-primary to-transparent" />
-      </div>
-      <div className="absolute inset-y-0 right-0 h-full w-px bg-neutral-200/80 dark:bg-neutral-800/80">
-        <div className="absolute h-40 w-px bg-linear-to-b from-transparent via-primary to-transparent" />
-      </div>
-      <div className="absolute inset-x-0 bottom-0 h-px w-full bg-neutral-200/80 dark:bg-neutral-800/80">
-        <div className="absolute mx-auto h-px w-40 bg-linear-to-r from-transparent via-primary to-transparent" />
-      </div>
+    <div id={id} className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
+      {/* fillter */}
+
+      {/* Hero */}
       <div className="px-4 py-10 md:py-20">
-        <h1 className="relative flex gap-1 md:gap-4 flex-wrap justify-center z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-300">
-          {"Belajar, Praktik, Berkembang – Semua dalam Satu Tempat."
+        <h1 className="relative flex gap-1 md:gap-4 flex-wrap justify-center z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-slate-700 md:text-4xl lg:text-7xl dark:text-slate-100">
+          {"Try It – Take Your First Step"
             .split(" ")
             .map((word, index) => (
               <motion.span
@@ -47,9 +42,9 @@ export default function HeroSectionOne() {
             duration: 0.3,
             delay: 0.8,
           }}
-          className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+          className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-400 dark:text-neutral-300"
         >
-         "Ikuti langkah demi langkah tutorial kami, praktik langsung, dan kuasai keterampilan baru tanpa bingung. Belajar jadi lebih efisien dan menyenangkan."
+         “Learning 1% every day is better than learning 99% at once.” 
         </motion.p>
         <motion.div
           initial={{
@@ -65,11 +60,9 @@ export default function HeroSectionOne() {
           className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
          <Button size={"lg"} className="font-bold hover:-translate-y-0.5">
-            Belajar Sekarang
+            Let's Try
          </Button>
-         <Button size={"lg"}  variant={"outline"}className="font-bold hover:-translate-y-0.5">
-            Hubungi Kami
-         </Button>
+         
          
         </motion.div>
     

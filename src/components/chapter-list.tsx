@@ -5,15 +5,10 @@ import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import {motion} from 'motion/react'
 import { AspectRatio } from './ui/aspect-ratio'
-
-interface Chapter {
-  id: number
-  title: string
-  url: string
-}
+import { Book } from '@/type'
 
 interface ChapterListProps {
-  data: Chapter[]
+  data: Book
 }
 
 const containerVariants = {
@@ -26,7 +21,8 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 }
 }
 
-const ChapterList: FC<ChapterListProps> = ({ data }) => {
+const  ChapterList: FC<ChapterListProps> = ({ data }) => {
+
   return (
     <motion.div
       className="grid grid-cols-1  md:grid-cols-2 gap-6   "
@@ -37,7 +33,8 @@ const ChapterList: FC<ChapterListProps> = ({ data }) => {
       }}
       >
       {data?.chapters?.map((chapter,index) => (
-        <motion.div className='hover:scale-110 transition-all ' key={chapter.id} >
+        <motion.div className='hover:scale-110 transition-all ' key={index} >
+          {chapter?.slug}
           <Link href={`${data.slug}/${chapter?.slug}`}>
             <Card className="hover:shadow-lg relative  transition p-0 ">
         
@@ -52,7 +49,7 @@ const ChapterList: FC<ChapterListProps> = ({ data }) => {
                 </div>
                
                 <div
-                className=' col-span-11 flex justify-center items-center nh-red'>
+                className=' col-span-11 flex justify-left indent-4 items-center nh-red'>
                  {chapter.title}
                 </div>
     

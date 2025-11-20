@@ -8,25 +8,27 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { BookIcon } from "lucide-react";
 import { IconBook, IconBookmarkAi } from "@tabler/icons-react";
 import Link from "next/link";
+import Image from "next/image";
+import { AspectRatio } from "./ui/aspect-ratio";
 
 export function SidebarMain({children}) {
   const {data} = useFetchData('/',"root")
   const [links, setLink] = useState<[]>()
-  useEffect(()=>{
-    if (data){
-      const listLink:any = []
-      data.map((link:any)=>{
-          listLink.push({
-            'title':link.title,
-            'url':link.url,
-            'icon':  <IconBook className="w-4 h-4"/>
-          })
-      }) 
-      setLink(listLink)
-    }
+  // useEffect(()=>{
+  //   if (data){
+  //     const listLink:any = []
+  //     data.map((link:any)=>{
+  //         listLink.push({
+  //           'title':link.title,
+  //           'url':link.url,
+  //           'icon':  <IconBook className="w-4 h-4"/>
+  //         })
+  //     }) 
+  //     setLink(listLink)
+  //   }
       
-    setLink(data)
-  },[data])
+  //   setLink(data)
+  // },[data])
  
   const [open, setOpen] = useState(false);
   return (
@@ -51,6 +53,7 @@ export function SidebarMain({children}) {
           </div>
         </SidebarBody>
       </Sidebar>
+  
       <div className="md:pl-16">
         {children}
       </div>
@@ -61,7 +64,7 @@ export function SidebarMain({children}) {
 export const Logo = () => {
   return (
     <Link
-      href="#"
+      href="/"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     >
       <LogoIcon />
@@ -81,7 +84,10 @@ export const LogoIcon = () => {
       href="#"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-black"
     > 
-      <span className="text-foreground font-bold text-2xl">T</span>
+    <AspectRatio ratio={1/1}>
+          <Image alt="try-log" src="/logo.png" className="w-12 h-12 object-contain" fill />
+
+    </AspectRatio>
     </Link>
   );
 };
